@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-function App() {
+const AllCongregations = [
+  {
+    id: 'wellingtoneast',
+    name: 'Wellington East',
+    pin: '0001',
+    telegram: '/telegram-wellington-east',
+  },
+  {
+    id: 'wellingtoncity',
+    name: 'Wellington City',
+    pin: '0002',
+    telegram: '/telegram-wellington-city',
+  },
+];
+
+const Wrapper = styled.div({
+  padding: '20px',
+});
+
+const App = () => {
+  const [congregationName, setCongregationName] = useState(null);
+  const [pin, setPin] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const domainId = window.location.pathname.substring(1);
+
+  const result = AllCongregations.filter(obj => {
+    return obj.id === 'wellingtoncity'
+  });
+
+  useEffect(() => {
+
+    setCongregationName(result[0].name);
+    setPin(result[0].pin);
+
+    setIsLoading(false);
+
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+
+      { isLoading ? <div>Loading...</div> :
+      <div>
+        <p>This is the {congregationName} Congregation.</p>
+        <p>The PIN is {pin}</p>
+      </div> }
+
+    </Wrapper>
   );
-}
+};
 
 export default App;
