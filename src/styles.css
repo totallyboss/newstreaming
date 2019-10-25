@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text&display=swap');
+
+* {
+  font-family: 'Open Sans', serif;
+  color: #444;
+}
+
+h1, h2, h3 {
+  font-family: 'Crimson Text', serif;
+}
