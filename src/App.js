@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import './styles.css';
+import './index.css';
 
 const AllCongregations = [
   {
@@ -26,8 +26,57 @@ const AllCongregations = [
   },
 ];
 
+const LoginForm = styled.div({
+  width: '100%',
+});
+
 const Wrapper = styled.div({
   padding: '20px',
+});
+
+const FieldWrapper = styled.label({
+  marginBottom: '20px',
+  display: 'block',
+});
+
+const FieldLabel = styled.span({
+  display: 'block',
+  textTransform: 'uppercase',
+  fontFamily: "'Noto Serif', serif",
+  fontSize: '14px',
+  marginBottom: '10px',
+});
+
+const TextInput = styled.input.attrs({type: 'text'})({
+  border: 'none',
+  borderBottom: 'solid 1px #C0C0C0',
+  outline: 0,
+  fontSize: '1rem',
+  color: '#553894',
+  paddingBottom: '10px',
+  width: '100%',
+
+  ':focus': {
+    borderBottom: 'solid 1px #553894',
+  }
+});
+
+const Button = styled.button({
+  display: 'inline-block',
+  cursor: 'pointer',
+  border: 'none',
+  background: '#7756BF',
+  textAlign: 'center',
+  color: '#FFF',
+  padding: '15px',
+  width: '100%',
+  borderRadius: '4px',
+  outline: 0,
+  transition: '0.25s',
+
+  ':hover': {
+    background: '#553894',
+  }
 });
 
 const NumberButton = styled.span({
@@ -64,10 +113,14 @@ const printNumbers = () => {
   return numbers;
 };
 
+
+
 const App = () => {
   const [congregationName, setCongregationName] = useState(null);
   const [password, setPassword] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSignedOut, setIsSignedOut] = useState(true);
+
 
   useEffect(() => {
     const domainId = window.location.pathname.substring(1);
@@ -75,45 +128,57 @@ const App = () => {
 
     setCongregationName(congregation[0].name);
     setPassword(congregation[0].password);
+
     setIsLoading(false);
 
   }, []);
 
+  const handleSubmitClick = () => {
+    console.log('Submit');
+
+    setIsSignedOut(false);
+  };
+
   return (
     <Wrapper>
-      <div>
-        <form>
-          <label>
-            Full name:
-            <input type="text" />
-          </label>
-
-          <label>
-            Password:
-            <input type="text" />
-          </label>
-
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-
-      <div>
-        <button>Live</button>
-        <button>Midweek</button>
-        <button>Weekend</button>
-      </div>
-
-      <div>
-        <p>How many people are watching?</p>
-
-        { printNumbers() }
-      </div>
 
       { isLoading ? <div>Loading...</div> :
-        <div>
-          <h1>{congregationName} Congregation</h1>
-          <p>The PIN is {password}</p>
-        </div> }
+
+        isSignedOut ?
+          <LoginForm>
+            <FieldWrapper>
+              <FieldLabel>Full name</FieldLabel>
+              <TextInput />
+            </FieldWrapper>
+
+            <FieldWrapper>
+              <FieldLabel>Password</FieldLabel>
+              <TextInput />
+            </FieldWrapper>
+
+            <Button onClick={handleSubmitClick}>Submit</Button>
+          </LoginForm> :
+
+          <div>
+            <div>
+              <button>Live</button>
+              <button>Midweek</button>
+              <button>Weekend</button>
+            </div>
+
+            <div>
+              <p>How many people are watching?</p>
+
+              { printNumbers() }
+            </div>
+
+            <div>
+              <h1>{congregationName} Congregation</h1>
+              <p>The PIN is {password}</p>
+            </div>
+          </div>
+
+        }
 
     </Wrapper>
   );
